@@ -1,0 +1,6 @@
+arcgis
+geopandas
+pyproj
+pandas
+fiona
+pygeos

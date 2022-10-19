@@ -1,4 +1,4 @@
-
+#written by William Wiskes 3/30/2022, published under MIT
 import arcgis
 from arcgis.geometry import Geometry
 from arcgis import GIS

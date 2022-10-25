@@ -104,15 +104,13 @@ def guzzlers(request):
         outProj2 = Proj(init='epsg:4326') #wgs84
         #declare a number to count up from and the end number (total)
         i = 0
-        total = len(fset_point.features)
         #loop through each feature sending edits to AGOL
         #the first loop is to loop through the features from AGOL, updating them,
         #the second (nested) loop is to loop through the enriched features 
-        while i < total:
+        while i < len(fset_point.features):
             edit_feature = fset_point.features[i]
             j = 0
-            ptotal = len(parsed)
-            while j < ptotal:
+            while j < len(parsed):
                 #if the enriched features objectID matches that of the AGOL feature, then update it
                 if parsed[j]['properties']['OBJECTID'] == edit_feature.attributes['OBJECTID']:
                     guz_id = parsed[j]['properties']['Guzzler_ID']
@@ -133,8 +131,8 @@ def guzzlers(request):
                     gps = transform(inProj,outProj2,utmx,utmy)
                     edit_feature.attributes['GPS'] = str(gps[1]) + ',' + str(gps[0]) #concatinated WGS84 
                     point_lyr.edit_features(updates=[edit_feature]) #update the feature
-                j = j + 1
-            i = i + 1
+                j += 1
+            i += 1
         return "complete"
     else:
         return "no data"

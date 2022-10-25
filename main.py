@@ -110,30 +110,30 @@ def guzzlers(request):
         #the second (nested) loop is to loop through the enriched features 
         while i < total:
             edit_feature = fset_point.features[i]
-            p = 0
+            j = 0
             ptotal = len(parsed)
-            while p < ptotal:
+            while j < ptotal:
                 #if the enriched features objectID matches that of the AGOL feature, then update it
-                if parsed[p]['properties']['OBJECTID'] == edit_feature.attributes['OBJECTID']:
-                    guz_id = parsed[p]['properties']['Guzzler_ID']
+                if parsed[j]['properties']['OBJECTID'] == edit_feature.attributes['OBJECTID']:
+                    guz_id = parsed[j]['properties']['Guzzler_ID']
                     edit_feature.attributes['Guzzler_ID'] = guz_id #Guzzler ID
-                    county = parsed[p]['properties']['County']
+                    county = parsed[j]['properties']['County']
                     edit_feature.attributes['County'] = county #county
-                    region = parsed[p]['properties']['DWR_Region']
+                    region = parsed[j]['properties']['DWR_Region']
                     edit_feature.attributes['DWR_Region'] = region #region
-                    ownership = parsed[p]['properties']['Land_Ownership']
+                    ownership = parsed[j]['properties']['Land_Ownership']
                     edit_feature.attributes['Land_Ownership'] = ownership #land ownership
-                    blm = parsed[p]['properties']['BLM_Field_Office']
+                    blm = parsed[j]['properties']['BLM_Field_Office']
                     edit_feature.attributes['BLM_Field_Office'] = blm # BLM
-                    utmx = parsed[p]['properties']['point'][7:].split(" ", 1)[0] 
-                    utmy = parsed[p]['properties']['point'][7:].split(" ", 1)[1].replace(")", "") 
+                    utmx = parsed[j]['properties']['point'][7:].split(" ", 1)[0] 
+                    utmy = parsed[j]['properties']['point'][7:].split(" ", 1)[1].replace(")", "") 
                     utm = transform(inProj,outProj,utmx,utmy)
                     edit_feature.attributes['UTM_E'] = utm[0] #UTM projected point X
                     edit_feature.attributes['UTM_N'] = utm[1] #UTM projected point Y
                     gps = transform(inProj,outProj2,utmx,utmy)
                     edit_feature.attributes['GPS'] = str(gps[1]) + ',' + str(gps[0]) #concatinated WGS84 
                     point_lyr.edit_features(updates=[edit_feature]) #update the feature
-                p = p + 1
+                j = j + 1
             i = i + 1
         return "complete"
     else:
